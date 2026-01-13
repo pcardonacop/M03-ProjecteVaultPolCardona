@@ -1,0 +1,49 @@
+﻿name: Security Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Run security unit tests
+      run: python -m unittest test_vault.py -v
+  
+  selenium-security-scan:
+    runs-on: ubuntu-latest
+    needs: unit-tests  # Executar després dels tests unitaris
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        pip install selenium webdriver-manager
+    
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+    
+    - name: Run automated security scan
+      run: |
+        echo " Executant escaneig de seguretat..."
+        python attack_bot.py
+        
+        # Aquest script retorna 1 si troba vulnerabilitat
+        # Això farà FALLAR la pipeline (el que volem)

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <title>Vault Login</title>
+    <script>
+        function checkLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const result = document.getElementById("result");
+            
+            // CONTRASENYA VÀLIDA (dèbil per a la pràctica)
+            if (password === "letmein") {
+                result.textContent = " Accés permès! Benvingut a la Caixa Forta.";
+                result.style.color = "green";
+                return true;
+            } else {
+                result.textContent = " Accés denegat. Contrasenya incorrecta.";
+                result.style.color = "red";
+                return false;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Accés a la Caixa Forta</h2>
+    <input type="text" id="username" placeholder="Usuari" value="admin">
+    <input type="password" id="password" placeholder="Contrasenya">
+    <button id="loginBtn" onclick="checkLogin()">Entrar</button>
+    <p id="result"></p>
+</body>
+</html>
